@@ -1,0 +1,16 @@
+{
+    "superheroes": [
+        {
+            "id": "hero_j1m8m4b",
+            "name": "Captain America"
+        },
+        {
+            "id": "hero_j1m8oq0c",
+            "name": "Iron Man"
+        },
+        {
+            "id": "hero_j1m8p3fd",
+            "name": "Hulk"
+        }
+    ]
+}
