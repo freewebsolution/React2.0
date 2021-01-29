@@ -49,7 +49,9 @@ const App = () => {
       heroes.filter(n => n.id === id)
       heroeService
         .deleteHero(id)
-      window.location.reload()
+      .then(()=>{
+        setHeroes(heroes.filter(hero => hero.id !== id))
+      })
     }
   }
   const rows = () => heroesToShow.map(hero =>

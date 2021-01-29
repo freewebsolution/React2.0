@@ -6,11 +6,6 @@
       "important": true
     },
     {
-      "name": "Daredevill ",
-      "id": 7,
-      "important": false
-    },
-    {
       "name": "iron Man",
       "id": 8,
       "important": true
@@ -32,10 +27,6 @@
       "name": "Hulk",
       "id": 12,
       "important": false
-    },
-    {
-      "name": "love heroes",
-      "id": 13
     }
   ]
 }
