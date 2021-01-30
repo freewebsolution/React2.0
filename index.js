@@ -79,8 +79,6 @@ app.delete('/api/heroes/:id', (request, response)=> {
     heroes = heroes.filter(hero => hero.id === id)
     response.status(204).end()
 })
-
-
-const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+const PORT = process.env.PORT || 5000  // Fall back to port 5000 if process.env.PORT is not set
+express()
+    .listen(PORT, () => console.log(`Listening on ${PORT}`))
