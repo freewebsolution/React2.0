@@ -79,7 +79,7 @@ app.delete('/api/heroes/:id', (request, response)=> {
     heroes = heroes.filter(hero => hero.id === id)
     response.status(204).end()
 })
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || config.httpPort;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
