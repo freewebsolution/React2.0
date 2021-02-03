@@ -26,6 +26,11 @@
     {
       "name": "Hulk",
       "id": 12,
+      "important": true
+    },
+    {
+      "name": "Daredevil",
+      "id": 13,
       "important": false
     }
   ]
