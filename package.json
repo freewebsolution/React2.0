@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
         "build:ui": "rm -rf build && cd F:/APP/REACT/forBlog/heroes && npm run build --prod && cp -r build F:/APP/REACT/forBlog/backend/",
-        "deploy": "git push heroku master",
+        "deploy": "git push heroku HEAD:main",
         "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
         "logs:prod": "heroku logs --tail"
   },
