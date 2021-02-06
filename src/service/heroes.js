@@ -1,11 +1,9 @@
 import Axios from "axios";
-
-const baseurl = 'http://localhost:3001/api/heroes'
+const baseurl = '/api/heroes'
 
 /**VISUALIZZA */
 const getAll = () => {
     const request = Axios.get(baseurl)
-
     return request.then(response => response.data)
 }
 

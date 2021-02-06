@@ -12,13 +12,14 @@
     "uniqid": "^5.1.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"npm run start-react\" \"npm run json-server\"",
+    "start": "npm run start-react",
     "start-react": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "json-server": "json-server -p 3003 --watch db.json"
   },
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": "react-app"
   },
