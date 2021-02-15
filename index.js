@@ -18,30 +18,46 @@ const unknownEndpoint = (request, response) => {
 app.use(requestLogger)
 
 app.use(requestLogger)
-let heroes = [
-    {
-        "id": 1,
-        "name": "Captain America",
-        "important":true
-    },
-    {
-        "id": 2,
-        "name": "Iron Man",
-        "important": true
-    },
-    {
-        "id": 3,
-        "name": "Hulk",
-        "important": false
-    }
-]
+// let heroes = [
+//     {
+//         "id": 1,
+//         "name": "Captain America",
+//         "important":true
+//     },
+//     {
+//         "id": 2,
+//         "name": "Iron Man",
+//         "important": true
+//     },
+//     {
+//         "id": 3,
+//         "name": "Hulk",
+//         "important": false
+//     }
+// ]
+const mongoose = require('mongoose')
+const password = 'secret'
+const url =
+    `mongodb+srv://lucioTicali:${password}@cluster0.pwxkn.mongodb.net/hero-db?retryWrites=true&w=majority`
+
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+
+const heroSchema = new mongoose.Schema({
+    name: String,
+    date: Date,
+    important: Boolean,
+})
+
+const Hero = mongoose.model('Hero', heroSchema)
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello world</h1>')
 })
 
 app.get('/api/heroes', (request, response) => {
-    response.json(heroes)
+    Hero.find({}).then(heroes => {
+      response.json(heroes)  
+    })    
 })
 app.get('/api/heroes/:id', (request, response) => {
     const id = Number(request.params.id)
@@ -76,7 +92,7 @@ app.post('/api/heroes', (request, response) => {
 
     response.json(hero)
 })
-app.deletes('/api/heroes/:id', (request, response)=> {
+app.delete('/api/heroes/:id', (request, response)=> {
     const id = Number(request.params.id)
     heroes = heroes.filter(hero => hero.id === id)
     response.status(204).end()
