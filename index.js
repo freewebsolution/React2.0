@@ -2,7 +2,6 @@ const express = require('express')
 const app = express();
 app.use(express.json())
 app.use(express.static('build'))
-
 const cors = require('cors')
 app.use(cors())
 const requestLogger = (request, response, next) => {
@@ -77,7 +76,7 @@ app.post('/api/heroes', (request, response) => {
 
     response.json(hero)
 })
-app.delete('/api/heroes/:id', (request, response)=> {
+app.deletes('/api/heroes/:id', (request, response)=> {
     const id = Number(request.params.id)
     heroes = heroes.filter(hero => hero.id === id)
     response.status(204).end()
