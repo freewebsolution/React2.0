@@ -45,28 +45,28 @@ const generateId =() => {
 }
 app.post('/api/heroes', (request, response) => {
     const body = request.body
-    if(!body.name){
+    if(body.content === undefined){
         return response.status(404).json({
             error: 'Contenuto vuoto'
         })
     }
 
-    const hero = {
+    const hero = new Hero({
         name: body.name,
         important: body.important || false,
         date: new Date(),
         id: generateId(),
-    }
+    })
 
-    heroes = heroes.concat(hero)
-
-    response.json(hero)
+    hero.save().then(savedHeroe => {
+        response.json(hero)
+    })
 })
 app.delete('/api/heroes/:id', (request, response)=> {
     const id = Number(request.params.id)
     heroes = heroes.filter(hero => hero.id === id)
     response.status(204).end()
 })
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)})
