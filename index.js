@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express();
 app.use(express.json())
@@ -14,42 +15,11 @@ const requestLogger = (request, response, next) => {
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
 }
+const Hero = require('./models/hero')
 
 app.use(requestLogger)
 
 app.use(requestLogger)
-// let heroes = [
-//     {
-//         "id": 1,
-//         "name": "Captain America",
-//         "important":true
-//     },
-//     {
-//         "id": 2,
-//         "name": "Iron Man",
-//         "important": true
-//     },
-//     {
-//         "id": 3,
-//         "name": "Hulk",
-//         "important": false
-//     }
-// ]
-const mongoose = require('mongoose')
-const password = 'secret'
-const url =
-    `mongodb+srv://lucioTicali:${password}@cluster0.pwxkn.mongodb.net/hero-db?retryWrites=true&w=majority`
-
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-
-const heroSchema = new mongoose.Schema({
-    name: String,
-    date: Date,
-    important: Boolean,
-})
-
-const Hero = mongoose.model('Hero', heroSchema)
-
 app.get('/', (request, response) => {
     response.send('<h1>Hello world</h1>')
 })
