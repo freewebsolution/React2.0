@@ -12,13 +12,7 @@ const requestLogger = (request, response, next) => {
     console.log('---')
     next()
 }
-const unknownEndpoint = (request, response) => {
-    response.status(404).send({ error: 'unknown endpoint' })
-}
 const Hero = require('./models/hero')
-
-app.use(requestLogger)
-
 app.use(requestLogger)
 app.get('/', (request, response) => {
     response.send('<h1>Hello world</h1>')
@@ -29,23 +23,21 @@ app.get('/api/heroes', (request, response) => {
       response.json(heroes)  
     })    
 })
-app.get('/api/heroes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const hero = heroes.find(hero => hero.id === id)
-    if(hero){
-       response.json(hero) 
-    } else {
-        response.status(404).end()
-    }
-    
+
+app.get('/api/heroes/:id', (request, response, next) => {
+    Hero.findById(request.params.id).then(h =>{
+        if(h){
+         response.json(h)   
+        }else {
+            response.status(404).end()
+        }      
+    })
+    .catch(error => next(error))   
 })
-const generateId =() => {
-    const maxId = heroes.length > 0 ? Math.max(...heroes.map(h => h.id)): 0
-    return maxId + 1
-}
+
 app.post('/api/heroes', (request, response) => {
     const body = request.body
-    if(body.content === undefined){
+    if(body.name === undefined){
         return response.status(404).json({
             error: 'Contenuto vuoto'
         })
@@ -54,19 +46,49 @@ app.post('/api/heroes', (request, response) => {
     const hero = new Hero({
         name: body.name,
         important: body.important || false,
-        date: new Date(),
-        id: generateId(),
+        date: new Date()
     })
 
     hero.save().then(savedHeroe => {
-        response.json(hero)
+        response.json(savedHeroe)
     })
 })
-app.delete('/api/heroes/:id', (request, response)=> {
-    const id = Number(request.params.id)
-    heroes = heroes.filter(hero => hero.id === id)
-    response.status(204).end()
+app.delete('/api/heroes/:id', (request, response, next) => {
+    Hero.findByIdAndRemove(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
+app.put('/api/heroes/:id', (request, response, next) => {
+    const body = request.body
+
+    const hero = {
+        name: body.name,
+        important: body.important,
+    }
+
+    Hero.findByIdAndUpdate(request.params.id, hero, { new: true })
+        .then(updatedHero => {
+            response.json(updatedHero)
+        })
+        .catch(error => next(error))
+})
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+
+    next(error)
+}
+app.use(errorHandler)
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)})
