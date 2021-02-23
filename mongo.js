@@ -9,7 +9,7 @@ const password = process.argv[2]
 
 
 const url =
-    `mongodb+srv://lucioTicali:${password}@cluster0.pwxkn.mongodb.net/hero-db?retryWrites=true&w=majority`
+    `mongodb+srv://lucioTicali:${password}@cluster0.acnd9.mongodb.net/heroes_db?retryWrites=true&w=majority`
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
@@ -24,13 +24,14 @@ const Hero = mongoose.model('Hero', heroSchema)
 const hero = new Hero({
     name: 'Batman',
     date: new Date(),
-    important: true,
+    important: false,
 })
 
 // hero.save().then(result => {
 //     console.log('hero saved!')
 //     mongoose.connection.close()
 // })
+
 Hero.find({}).then(result => {
     result.forEach(hero => {
         console.log(hero)

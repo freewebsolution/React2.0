@@ -4,21 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:ui": "rm -rf build && cd F:/APP/REACT/course/heroes && npm run build --prod && cp -r build F:/APP/REACT/course/backend/",
+    "deploy": "git push heroku master",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
+    "logs:prod": "heroku logs --tail",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf build && cd F:/APP/REACT/forBlog/heroes && npm run build --prod && cp -r build F:/APP/REACT/forBlog/backend/",
-    "deploy": "git push heroku HEAD:main",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Lucio Ticali",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.11.16"
+    "mongoose": "^5.11.17"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
