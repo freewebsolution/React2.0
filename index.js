@@ -46,7 +46,7 @@ app.delete('/api/heroes/:id', (request, response, next) => {
     .catch(error =>(error))
 })
 
-app.post('/api/heroes', (request, response) => {
+app.post('/api/heroes', (request, response, next) => {
     const body = request.body
     if (body.name === undefined) {
         return response.status(404).json({
@@ -59,9 +59,12 @@ app.post('/api/heroes', (request, response) => {
         date: new Date(),
     })
 
-    hero.save().then(savedHero => {
-        response.json(savedHero)  
-    })    
+    hero.save()
+    .then(savedHero => savedHero.toJSON())
+    .then(savedAndFormattedHero => {
+        response.json(savedAndFormattedHero)
+    })
+    .catch(error => next(error))    
 })
 
 app.put('/api/heroes/:id', (request, response, next) => {
@@ -87,6 +90,9 @@ const errorHandler = (error,request,response,next) => {
     console.error(error.message)
     if(error.name === 'CastError') {
         return response.status(400).send({error: 'Id non esistente'})
+    } else if(error.name === 'ValidationError') {
+        return response.status(400).json({error: error.message})
+
     }
     next (error)
 }

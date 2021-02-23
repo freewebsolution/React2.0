@@ -9,8 +9,15 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFind
         console.log('error connecting to MongoDB:', error.message)
     })
 const heroSchema = new mongoose.Schema({
-    name: String,
-    date: Date,
+    name: {
+        type:String,
+        minlength: 5,
+        required:true
+    },
+    date: {
+        type:Date,
+        required:true
+    },
     important: Boolean,
 })
 heroSchema.set('toJSON', {
